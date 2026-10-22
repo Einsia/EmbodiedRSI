@@ -171,7 +171,7 @@ class Session:
                 None if self.env.max_steps is None
                 else max(0, self.env.max_steps - self.env.control_steps)
             ),
-            "success": bool(self.env.success),
+            "success": bool(self.env.success) if getattr(self.env, "success_known", True) else None,
             "terminated": bool(self.env.terminated),
             "truncated": bool(self.env.truncated),
             "observation": self.latest,
@@ -187,7 +187,7 @@ class Session:
                 **self.status(),
                 "protocol": SESSION_PROTOCOL,
                 "valid": self.valid,
-                "task_completed": bool(self.env.success),
+                "task_completed": self.status()["success"],
                 **(self._scoring or {}),
             },
         )
@@ -272,7 +272,11 @@ class Session:
             self._scoring = capture_scoring(self.env, self.run, execution=self.used)
             feedback_started = time.monotonic()
             export_observation(self.env, folder, workspace=self.workspace)
-            videos = write_videos(result.frames, folder, stem="execution", fps=self.fps)
+            video_options = {"native_size": True} if getattr(
+                self.env, "native_feedback_size", False
+            ) else {}
+            videos = write_videos(result.frames, folder, stem="execution", fps=self.fps,
+                                  **video_options)
             self._writable_state = capture_writable_changes(
                 self.workspace, folder, self._writable_state
             )
@@ -303,8 +307,9 @@ class Session:
                     json.dumps(
                         {
                             "execution": self.used,
-                            "reward": result.reward,
-                            "success": result.success,
+                            "reward": (result.reward
+                                       if getattr(self.env, "success_known", True) else None),
+                            "success": self.status()["success"],
                             "ok": result.ok,
                             "code_sha256": hashlib.sha256(code.encode()).hexdigest(),
                             "timing": public["timing"],

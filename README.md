@@ -91,6 +91,10 @@ See [the protocol](docs/PROTOCOL.md) and [running and evaluation](docs/RUNNING.m
 
 ## Source map
 
+For frozen Skills/Lessons deployment on BluPe's remote YAM arms, see
+[the BluPe deployment guide](docs/BLUPE.md). It provides a separate headless runner,
+an offline execution check and a read-only remote availability probe.
+
 | Path | Role |
 | --- | --- |
 | `orchestrator/` | Task configuration, isolated agents, sessions, freeze and Test lifecycle |

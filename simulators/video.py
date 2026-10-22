@@ -11,6 +11,7 @@ def write_videos(
     *,
     stem: str,
     fps: int = 30,
+    native_size: bool = False,
 ) -> dict[str, str]:
     """Write one mp4 per view; return view -> path. Empty views are skipped."""
     import imageio.v3 as iio
@@ -22,6 +23,7 @@ def write_videos(
         if not frames:
             continue
         path = out_dir / f"{stem}_{view}.mp4"
-        iio.imwrite(path, np.stack(frames), fps=fps, codec="libx264")
+        options = {"macro_block_size": 1} if native_size else {}
+        iio.imwrite(path, np.stack(frames), fps=fps, codec="libx264", **options)
         written[view] = str(path)
     return written
