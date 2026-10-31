@@ -32,6 +32,22 @@ knowledge lives in reusable code and written lessons in the workspace.
    simulator. The transferred knowledge is read-only; the agent can observe and
    revise code within the scene, but cannot reset or learn across Test scenes.
 
+## Skills and Lessons
+
+Browse learned knowledge for **42 RoboDojo tasks**, organized by task name:
+
+- [Skills](Workspace/skills/): reusable Python controllers and companion notes
+  describing their inputs, usage and limitations.
+- [Lessons](Workspace/lessons/): findings about manipulation, observed failures,
+  recovery strategies and unresolved hypotheses.
+
+Read the matching folders together, such as
+[skills/stack_blocks/](Workspace/skills/stack_blocks/) and
+[lessons/stack_blocks/](Workspace/lessons/stack_blocks/). This collection is
+available for reference and explicit reuse. The standard Playground-to-Test
+workflow uses the task workspace templates and freezes knowledge learned during
+that run.
+
 ## Setup
 
 Use a Linux host and Python 3.11 or newer for the orchestration environment:
@@ -98,6 +114,8 @@ See [the protocol](docs/PROTOCOL.md) and [running and evaluation](docs/RUNNING.m
 | `integrations/robodojo_policy/` | XPolicyLab policy and native evaluation transport |
 | `tasks/RoboDojo/` | Playground/Test templates, primitive manual and public recipes |
 | `tasks_baseline/RoboDojo/` | Fresh Test-only baseline |
+| [Workspace/skills/](Workspace/skills/) | Learned controllers and usage notes, organized by task |
+| [Workspace/lessons/](Workspace/lessons/) | Learned findings, failures and recovery strategies, organized by task |
 | `docker/agent/`, `scripts/` | Thin agent image, provisioning and diagnostics |
 | `tests/` | CPU tests; optional transport tests require a provisioned XPolicyLab |
 
